@@ -64,12 +64,10 @@ wait
 echo ">>>>  SUCCESSFULLY INSTALLED <<<<"
 fi
 		echo "********************************************************************************"
-rm -rf * > /dev/null 2>&1
 echo "   UPLOADED BY  >>>>   EMIL_NABIL "   
 sleep 4;
 		echo "#                Restart Enigma2 GUI                    #"
 echo "#########################################################"
-sleep 2
 if [ $OS = 'DreamOS' ]; then
     systemctl restart enigma2
 else
