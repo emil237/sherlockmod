@@ -68,9 +68,5 @@ echo "   UPLOADED BY  >>>>   EMIL_NABIL "
 sleep 4;
 		echo "#                Restart Enigma2 GUI                    #"
 echo "#########################################################"
-if [ $OS = 'DreamOS' ]; then
-    systemctl restart enigma2
-else
-    killall -9 enigma2
-fi
+
 exit 0
