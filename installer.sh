@@ -10,16 +10,25 @@ OPKGINSTALL="opkg install --force-overwrite"
 MY_IPK="enigma2-plugin-extensions-sherlockmod_1.4.2_all.ipk"
 MY_DEB="enigma2-plugin-extensions-sherlockmod_1.4.2_all.deb"
 MY_URL="https://raw.githubusercontent.com/emil237/sherlockmod/main"
-if [ -f /etc/apt/apt.conf ] ; then
-    STATUS='/var/lib/dpkg/status'
-    OS='DreamOS'
-elif [ -f /etc/opkg/opkg.conf ] ; then
-   STATUS='/var/lib/opkg/status'
-   OS='Opensource'
+#
+if [ -f /etc/apt/apt.conf ]; then
+    INSTALL="apt-get install -y"
+    OPKGREMOV="apt-get purge --auto-remove -y"
+    CHECK_INSTALLED="dpkg -l"
+    OS="DreamOS"
+elif [ -f /etc/opkg/opkg.conf ]; then
+    INSTALL="opkg install --force-reinstall --force-depends"
+    OPKGREMOV="opkg remove --force-depends"
+    CHECK_INSTALLED="opkg list-installed"
+    OS="Opensource"
+else
+    echo "Unsupported OS"
+    exit 1
 fi
 
 # remove old version #
 if [ -d /usr/lib/enigma2/python/Plugins/Extensions/Sherlockmod ]; then
+$OPKGREMOV enigma2-plugin-extensions-sherlockmod 
  rm -rf /usr/lib/enigma2/python/Plugins/Extensions/Sherlockmod
 fi;
 if [ -f /usr/lib/enigma2/python/Components/Converter/ArBoxInfo.py ]; then
@@ -52,7 +61,7 @@ wait
 rm -f $MY_DEB
 	else
   wget "$MY_URL/$MY_IPK"
-		$OPKGINSTALL $MY_IPK
+		$INSTALL $MY_IPK
 wait
 rm -f $MY_IPK
 	fi
@@ -64,9 +73,10 @@ wait
 echo ">>>>  SUCCESSFULLY INSTALLED <<<<"
 fi
 		echo "********************************************************************************"
+
+clear
+echo ""
 echo "   UPLOADED BY  >>>>   EMIL_NABIL "   
 sleep 4;
-		echo "#                Restart Enigma2 GUI                    #"
 echo "#########################################################"
-
 exit 0
